@@ -39,6 +39,7 @@ io.on("connection", (socket) => {
         console.log("📦 DATOS:", datos);
     });
 
+
     socket.on("crearSala", (codigo) => {
 
         console.log("🎯 CREAR SALA RECIBIDO");
@@ -51,34 +52,64 @@ io.on("connection", (socket) => {
         socket.emit("salaCreada", codigo);
     });
 
+
     socket.on("unirseSala", (codigo) => {
 
         console.log("🎯 UNIRSE SALA RECIBIDO");
         console.log("🔑 Código:", codigo);
 
-        const sala = io.sockets.adapter.rooms.get(codigo);
 
-        if (sala && sala.size >= 2) {
+        const salaAntes = io.sockets.adapter.rooms.get(codigo);
+
+
+        if (salaAntes && salaAntes.size >= 2) {
+
+            console.log("🚫 SALA LLENA");
+
             socket.emit("salaLlena");
+
             return;
         }
 
+
         socket.join(codigo);
+
+
+        const salaDespues = io.sockets.adapter.rooms.get(codigo);
+
 
         console.log(`💕 Una persona se unió a: ${codigo}`);
 
+
+        console.log(
+            `👥 PERSONAS EN LA SALA: ${salaDespues ? salaDespues.size : 0}`
+        );
+
+
         socket.emit("salaUnida", codigo);
 
+
         socket.to(codigo).emit("parejaEntro");
+
+
+        console.log("❤️ EVENTO parejaEntro ENVIADO");
+
     });
 
+
     socket.on("disconnect", () => {
+
         console.log("💔 UNA PERSONA SE DESCONECTÓ");
+
     });
+
 });
+
 
 const PORT = process.env.PORT || 3000;
 
 servidor.listen(PORT, "0.0.0.0", () => {
+
     console.log(`🚀 Servidor funcionando en el puerto ${PORT}`);
+
 });
