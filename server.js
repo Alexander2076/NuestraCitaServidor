@@ -80,14 +80,12 @@ io.on("connection", (socket) => {
 });
 
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-servidor.listen(PORT, () => {
+servidor.listen(PORT, "0.0.0.0", () => {
 
     console.log(
         `Servidor funcionando en el puerto ${PORT}`
     );
 
 });
-
-
