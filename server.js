@@ -24,6 +24,15 @@ io.on("connection", (socket) => {
     console.log("❤️ UNA PERSONA SE CONECTÓ");
     console.log("🆔 ID:", socket.id);
 
+
+    socket.on("pruebaConexion", () => {
+
+        console.log("🧪 PRUEBA DE CONEXIÓN RECIBIDA");
+        console.log("🆔 ID DEL SOCKET:", socket.id);
+
+    });
+
+
     // Detecta absolutamente cualquier evento que llegue
     socket.onAny((evento, ...datos) => {
         console.log("📩 EVENTO RECIBIDO:", evento);
